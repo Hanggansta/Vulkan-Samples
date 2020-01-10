@@ -405,7 +405,7 @@ struct hash<vkb::PipelineState>
 
 		vkb::hash_combine(result, pipeline_state.get_subpass_index());
 
-		for (auto stage : pipeline_state.get_pipeline_layout().get_shader_program().get_shader_modules())
+		for (auto stage : pipeline_state.get_pipeline_layout().get_shader_modules())
 		{
 			vkb::hash_combine(result, stage->get_id());
 		}
@@ -489,6 +489,17 @@ inline void hash_param<std::vector<uint8_t>>(
     const std::vector<uint8_t> &value)
 {
 	hash_combine(seed, std::string{value.begin(), value.end()});
+}
+
+template <>
+inline void hash_param<std::vector<std::string>>(
+    size_t &                        seed,
+    const std::vector<std::string> &value)
+{
+	for (auto &resource : value)
+	{
+		hash_combine(seed, resource);
+	}
 }
 
 template <>

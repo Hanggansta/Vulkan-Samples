@@ -105,15 +105,9 @@ class Subpass
 
 	void set_output_attachments(std::vector<uint32_t> output);
 
-	void set_use_dynamic_resources(bool dynamic);
+	void clear_dynamic_resources();
 
-	/**
-	 * @brief Add definitions to shader variant within a subpass
-	 * 
-	 * @param variant Variant to add definitions too
-	 * @param definitions Vector of definitions to add to the variant
-	 */
-	void add_definitions(ShaderVariant &variant, const std::vector<std::string> &definitions);
+	void add_dynamic_resources(const std::vector<std::string> &dynamic_resources);
 
 	/**
 	 * @brief Create a buffer allocation from scene graph lights to be bound to shaders
@@ -188,7 +182,7 @@ class Subpass
   protected:
 	RenderContext &render_context;
 
-	bool use_dynamic_resources{false};
+	std::vector<std::string> dynamic_resources{};
 
   private:
 	ShaderSource vertex_shader;

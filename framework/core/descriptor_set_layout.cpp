@@ -70,7 +70,7 @@ inline VkDescriptorType find_descriptor_type(ShaderResourceType resource_type, b
 }
 }        // namespace
 
-DescriptorSetLayout::DescriptorSetLayout(Device &device, const std::vector<ShaderResource> &resource_set, bool use_dynamic_resources) :
+DescriptorSetLayout::DescriptorSetLayout(Device &device, const std::vector<ShaderResource> &resource_set) :
     device{device}
 {
 	for (auto &resource : resource_set)
@@ -85,7 +85,7 @@ DescriptorSetLayout::DescriptorSetLayout(Device &device, const std::vector<Shade
 		}
 
 		// Convert from ShaderResourceType to VkDescriptorType.
-		auto descriptor_type = find_descriptor_type(resource.type, use_dynamic_resources);
+		auto descriptor_type = find_descriptor_type(resource.type, resource.dynamic);
 
 		// Convert ShaderResource to VkDescriptorSetLayoutBinding
 		VkDescriptorSetLayoutBinding layout_binding{};

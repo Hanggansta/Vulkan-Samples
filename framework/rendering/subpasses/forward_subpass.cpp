@@ -40,7 +40,7 @@ ForwardSubpass::ForwardSubpass(RenderContext &render_context, ShaderSource &&ver
 void ForwardSubpass::prepare()
 {
 	// By default use dynamic resources
-	use_dynamic_resources = true;
+	dynamic_resources = {"GlobalUniform"};
 
 	auto &device = render_context.get_device();
 	for (auto &mesh : meshes)

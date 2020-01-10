@@ -21,7 +21,6 @@
 #include "common/vk_common.h"
 #include "core/descriptor_set_layout.h"
 #include "core/shader_module.h"
-#include "rendering/shader_program.h"
 
 namespace vkb
 {
@@ -32,7 +31,7 @@ class DescriptorSetLayout;
 class PipelineLayout
 {
   public:
-	PipelineLayout(Device &device, const std::vector<ShaderModule *> &shader_modules, bool use_dynamic_resources);
+	PipelineLayout(Device &device, const std::vector<ShaderModule *> &shader_modules, const std::vector<std::string> &dynamic_resources);
 
 	PipelineLayout(const PipelineLayout &) = delete;
 
@@ -46,7 +45,11 @@ class PipelineLayout
 
 	VkPipelineLayout get_handle() const;
 
-	const ShaderProgram &get_shader_program() const;
+	const std::vector<ShaderModule *> &get_shader_modules() const;
+
+	const std::vector<ShaderResource> get_resources(const ShaderResourceType &type = ShaderResourceType::All, VkShaderStageFlagBits stage = VK_SHADER_STAGE_ALL) const;
+
+	const std::unordered_map<uint32_t, std::vector<ShaderResource>> &get_shader_sets() const;
 
 	bool has_descriptor_set_layout(uint32_t set_index) const;
 
@@ -59,8 +62,16 @@ class PipelineLayout
 
 	VkPipelineLayout handle{VK_NULL_HANDLE};
 
-	ShaderProgram shader_program;
+	// The shader modules that this pipeline layout uses
+	std::vector<ShaderModule *> shader_modules;
 
+	// The shader resources that this pipeline layout uses, indexed by their name
+	std::unordered_map<std::string, ShaderResource> shader_resources;
+
+	// A map of each set and the resources it owns used by the pipeline layout
+	std::unordered_map<uint32_t, std::vector<ShaderResource>> shader_sets;
+
+	// The different descriptor set layouts for this pipeline layout
 	std::unordered_map<uint32_t, DescriptorSetLayout *> descriptor_set_layouts;
 };
 }        // namespace vkb

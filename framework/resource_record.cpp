@@ -75,17 +75,18 @@ size_t ResourceRecord::register_shader_module(VkShaderStageFlagBits stage, const
 	return shader_module_indices.back();
 }
 
-size_t ResourceRecord::register_pipeline_layout(const std::vector<ShaderModule *> &shader_modules, bool use_dynamic_resources)
+size_t ResourceRecord::register_pipeline_layout(const std::vector<ShaderModule *> &shader_modules, const std::vector<std::string> &dynamic_resources)
 {
 	pipeline_layout_indices.push_back(pipeline_layout_indices.size());
 
 	std::vector<size_t> shader_indices(shader_modules.size());
 	std::transform(shader_modules.begin(), shader_modules.end(), shader_indices.begin(),
 	               [this](ShaderModule *shader_module) { return shader_module_to_index.at(shader_module); });
+
 	write(stream,
 	      ResourceType::PipelineLayout,
 	      shader_indices,
-	      use_dynamic_resources);
+	      dynamic_resources);
 
 	return pipeline_layout_indices.back();
 }

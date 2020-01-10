@@ -90,16 +90,13 @@ void Subpass::set_output_attachments(std::vector<uint32_t> output)
 	output_attachments = output;
 }
 
-void Subpass::set_use_dynamic_resources(bool b)
+void Subpass::clear_dynamic_resources()
 {
-	use_dynamic_resources = b;
+	dynamic_resources.clear();
 }
 
-void Subpass::add_definitions(ShaderVariant &variant, const std::vector<std::string> &definitions)
+void Subpass::add_dynamic_resources(const std::vector<std::string> &dynamic_resources_)
 {
-	for (auto &definition : definitions)
-	{
-		variant.add_define(definition);
-	}
+	dynamic_resources.insert(dynamic_resources.end(), dynamic_resources_.begin(), dynamic_resources_.end());
 }
 }        // namespace vkb

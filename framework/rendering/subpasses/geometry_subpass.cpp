@@ -41,7 +41,7 @@ GeometrySubpass::GeometrySubpass(RenderContext &render_context, ShaderSource &&v
 void GeometrySubpass::prepare()
 {
 	// By default use dynamic resources
-	use_dynamic_resources = true;
+	dynamic_resources = {"GlobalUniform"};
 
 	// Build all shader variance upfront
 	auto &device = render_context.get_device();
@@ -170,7 +170,7 @@ void GeometrySubpass::draw_submesh(CommandBuffer &command_buffer, sg::SubMesh &s
 
 	std::vector<ShaderModule *> shader_modules{&vert_shader_module, &frag_shader_module};
 
-	auto &pipeline_layout = device.get_resource_cache().request_pipeline_layout(shader_modules, use_dynamic_resources);
+	auto &pipeline_layout = device.get_resource_cache().request_pipeline_layout(shader_modules, dynamic_resources);
 
 	command_buffer.bind_pipeline_layout(pipeline_layout);
 
@@ -195,7 +195,7 @@ void GeometrySubpass::draw_submesh(CommandBuffer &command_buffer, sg::SubMesh &s
 		}
 	}
 
-	auto vertex_input_resources = pipeline_layout.get_shader_program().get_resources(ShaderResourceType::Input, VK_SHADER_STAGE_VERTEX_BIT);
+	auto vertex_input_resources = pipeline_layout.get_resources(ShaderResourceType::Input, VK_SHADER_STAGE_VERTEX_BIT);
 
 	VertexInputState vertex_input_state;
 

@@ -63,14 +63,14 @@ ShaderModule &ResourceCache::request_shader_module(VkShaderStageFlagBits stage, 
 	return request_resource(device, recorder, shader_module_mutex, state.shader_modules, stage, glsl_source, entry_point, shader_variant);
 }
 
-PipelineLayout &ResourceCache::request_pipeline_layout(const std::vector<ShaderModule *> &shader_modules, bool use_dynamic_resources)
+PipelineLayout &ResourceCache::request_pipeline_layout(const std::vector<ShaderModule *> &shader_modules, const std::vector<std::string> &dynamic_resources)
 {
-	return request_resource(device, recorder, pipeline_layout_mutex, state.pipeline_layouts, shader_modules, use_dynamic_resources);
+	return request_resource(device, recorder, pipeline_layout_mutex, state.pipeline_layouts, shader_modules, dynamic_resources);
 }
 
-DescriptorSetLayout &ResourceCache::request_descriptor_set_layout(const std::vector<ShaderResource> &set_resources, bool use_dynamic_resources)
+DescriptorSetLayout &ResourceCache::request_descriptor_set_layout(const std::vector<ShaderResource> &set_resources)
 {
-	return request_resource(device, recorder, descriptor_set_layout_mutex, state.descriptor_set_layouts, set_resources, use_dynamic_resources);
+	return request_resource(device, recorder, descriptor_set_layout_mutex, state.descriptor_set_layouts, set_resources);
 }
 
 GraphicsPipeline &ResourceCache::request_graphics_pipeline(PipelineState &pipeline_state)

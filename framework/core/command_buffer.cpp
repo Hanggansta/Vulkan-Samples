@@ -21,7 +21,6 @@
 #include "common/error.h"
 #include "device.h"
 #include "rendering/render_frame.h"
-#include "rendering/shader_program.h"
 #include "rendering/subpass.h"
 
 namespace vkb
@@ -528,13 +527,11 @@ void CommandBuffer::flush_descriptor_state(VkPipelineBindPoint pipeline_bind_poi
 
 	const auto &pipeline_layout = pipeline_state.get_pipeline_layout();
 
-	const auto &shader_program = pipeline_layout.get_shader_program();
-
 	std::unordered_set<uint32_t> update_descriptor_sets;
 
 	// Iterate over the shader sets to check if they have already been bound
 	// If they have, add the set so that the command buffer later updates it
-	for (auto &set_it : shader_program.get_shader_sets())
+	for (auto &set_it : pipeline_layout.get_shader_sets())
 	{
 		uint32_t descriptor_set_id = set_it.first;
 
