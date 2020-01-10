@@ -17,6 +17,9 @@
 
 #include "specialization_constants.h"
 
+#include <string>
+#include <vector>
+
 #include "gltf_loader.h"
 #include "gui.h"
 #include "platform/filesystem.h"
@@ -61,6 +64,8 @@ bool SpecializationConstants::prepare(vkb::Platform &platform)
 
 void SpecializationConstants::ForwardSubpassCustomLights::prepare()
 {
+	dynamic_resources = {"GlobalUniform"};
+
 	auto &device = render_context.get_device();
 	for (auto &mesh : meshes)
 	{
@@ -69,14 +74,11 @@ void SpecializationConstants::ForwardSubpassCustomLights::prepare()
 			auto &variant = sub_mesh->get_mut_shader_variant();
 
 			// Same as Geometry except adds lighting definitions to sub mesh variants.
-			add_definitions(variant, {"MAX_FORWARD_LIGHT_COUNT " + std::to_string(LIGHT_COUNT)});
-			add_definitions(variant, vkb::light_type_definitions);
+			variant.add_definitions({"MAX_FORWARD_LIGHT_COUNT " + std::to_string(LIGHT_COUNT)});
+			variant.add_definitions(vkb::light_type_definitions);
 
 			auto &vert_module = device.get_resource_cache().request_shader_module(VK_SHADER_STAGE_VERTEX_BIT, get_vertex_shader(), variant);
 			auto &frag_module = device.get_resource_cache().request_shader_module(VK_SHADER_STAGE_FRAGMENT_BIT, get_fragment_shader(), variant);
-
-			vert_module.set_resource_dynamic("GlobalUniform");
-			frag_module.set_resource_dynamic("GlobalUniform");
 		}
 	}
 }
