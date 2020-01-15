@@ -17,7 +17,11 @@
 -
 -->
 
-# Memory limits with Vulkan 
+# Memory limits with Vulkan <!-- omit in toc -->
+
+## Contents <!-- omit in toc -->
+
+- [Mali GPUs](#mali-gpus)
 
 ## Mali GPUs
 
