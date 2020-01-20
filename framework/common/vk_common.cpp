@@ -124,30 +124,30 @@ bool is_depth_stencil_format(VkFormat format)
 	       is_depth_only_format(format);
 }
 
-VkBool32 get_supported_depth_format(VkPhysicalDevice physical_device, VkFormat *depth_format)
+VkFormat get_suitable_depth_format(VkPhysicalDevice physical_device, const std::vector<VkFormat> &depth_format_priority_list)
 {
-	// Since all depth formats may be optional, we need to find a suitable depth format to use
-	// Start with the highest precision packed format
-	std::vector<VkFormat> depth_formats = {
-	    VK_FORMAT_D32_SFLOAT_S8_UINT,
-	    VK_FORMAT_D32_SFLOAT,
-	    VK_FORMAT_D24_UNORM_S8_UINT,
-	    VK_FORMAT_D16_UNORM_S8_UINT,
-	    VK_FORMAT_D16_UNORM};
+	VkFormat depth_format{VK_FORMAT_UNDEFINED};
 
-	for (auto &format : depth_formats)
+	for (auto &format : depth_format_priority_list)
 	{
 		VkFormatProperties properties;
 		vkGetPhysicalDeviceFormatProperties(physical_device, format, &properties);
+
 		// Format must support depth stencil attachment for optimal tiling
 		if (properties.optimalTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
 		{
-			*depth_format = format;
-			return true;
+			depth_format = format;
+			break;
 		}
 	}
 
-	return false;
+	if (depth_format != VK_FORMAT_UNDEFINED)
+	{
+		LOGI("Depth format selected: {}", to_string(depth_format));
+		return depth_format;
+	}
+
+	throw std::runtime_error("No suitable depth format could be determined");
 }
 
 bool is_dynamic_buffer_descriptor_type(VkDescriptorType descriptor_type)

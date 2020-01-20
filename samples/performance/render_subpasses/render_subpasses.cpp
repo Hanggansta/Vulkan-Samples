@@ -64,7 +64,7 @@ vkb::RenderTarget RenderSubpasses::create_render_target(vkb::core::Image &&swapc
 
 	vkb::core::Image depth_image{device,
 	                             extent,
-	                             VK_FORMAT_D32_SFLOAT,
+	                             vkb::get_suitable_depth_format(swapchain_image.get_device().get_physical_device()),
 	                             VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | rt_usage_flags,
 	                             VMA_MEMORY_USAGE_GPU_ONLY};
 

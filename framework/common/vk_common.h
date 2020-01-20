@@ -55,12 +55,18 @@ bool is_depth_only_format(VkFormat format);
 bool is_depth_stencil_format(VkFormat format);
 
 /**
- * @brief Helper function to determine a suitable supported depth format starting with 32 bit down to 16 bit
+ * @brief Helper function to determine a suitable supported depth format based on a priority list
  * @param physical_device The physical device to check the depth formats against
- * @param depth_format The depth format (this can be modified)
- * @return false if none of the depth formats in the list is supported by the device
+ * @param depth_format_priority_list The list of depth formats to prefer over one another
+ *		  By default we start with the highest precision packed format
+ * @return The valid suited depth format
  */
-VkBool32 get_supported_depth_format(VkPhysicalDevice physical_device, VkFormat *depth_format);
+VkFormat get_suitable_depth_format(VkPhysicalDevice             physical_device,
+                                   const std::vector<VkFormat> &depth_format_priority_list = {
+                                       VK_FORMAT_D32_SFLOAT,
+                                       VK_FORMAT_D24_UNORM_S8_UINT,
+                                       VK_FORMAT_D16_UNORM_S8_UINT,
+                                       VK_FORMAT_D16_UNORM});
 
 /**
  * @brief Helper function to determine if a Vulkan descriptor type is a dynamic storage buffer or dynamic uniform buffer.
