@@ -1,5 +1,5 @@
 /* Copyright (c) 2018-2020, Arm Limited and Contributors
- * Copyright (c) 2019, Sascha Willems
+ * Copyright (c) 2019-2020, Sascha Willems
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -64,8 +64,6 @@ bool is_depth_stencil_format(VkFormat format);
 VkFormat get_suitable_depth_format(VkPhysicalDevice             physical_device,
                                    const std::vector<VkFormat> &depth_format_priority_list = {
                                        VK_FORMAT_D32_SFLOAT,
-                                       VK_FORMAT_D24_UNORM_S8_UINT,
-                                       VK_FORMAT_D16_UNORM_S8_UINT,
                                        VK_FORMAT_D16_UNORM});
 
 /**

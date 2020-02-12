@@ -40,9 +40,6 @@ GeometrySubpass::GeometrySubpass(RenderContext &render_context, ShaderSource &&v
 
 void GeometrySubpass::prepare()
 {
-	// By default use dynamic resources
-	dynamic_resources = {"GlobalUniform"};
-
 	// Build all shader variance upfront
 	auto &device = render_context.get_device();
 	for (auto &mesh : meshes)
