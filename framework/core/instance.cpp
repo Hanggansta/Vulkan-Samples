@@ -158,7 +158,7 @@ Instance::Instance(const std::string &              application_name,
 	std::vector<const char *> active_instance_layers(required_validation_layers);
 
 #ifdef VKB_VALIDATION_LAYERS
-	active_instance_layers.push_back("VK_LAYER_KHRONOS_validation");
+	active_instance_layers.push_back("VK_LAYER_LUNARG_core_validation");
 #endif
 
 	if (validate_layers(active_instance_layers, instance_layers))

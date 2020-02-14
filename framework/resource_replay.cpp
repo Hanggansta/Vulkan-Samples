@@ -115,18 +115,16 @@ void ResourceReplay::create_shader_module(ResourceCache &resource_cache, std::is
 
 void ResourceReplay::create_pipeline_layout(ResourceCache &resource_cache, std::istringstream &stream)
 {
-	std::vector<size_t>      shader_indices;
-	std::vector<std::string> dynamic_resources;
+	std::vector<size_t> shader_indices;
 
 	read(stream,
-	     shader_indices,
-	     dynamic_resources);
+	     shader_indices);
 
 	std::vector<ShaderModule *> shader_stages(shader_indices.size());
 	std::transform(shader_indices.begin(), shader_indices.end(), shader_stages.begin(),
 	               [&](size_t shader_index) { return shader_modules.at(shader_index); });
 
-	auto &pipeline_layout = resource_cache.request_pipeline_layout(shader_stages, dynamic_resources);
+	auto &pipeline_layout = resource_cache.request_pipeline_layout(shader_stages);
 
 	pipeline_layouts.push_back(&pipeline_layout);
 }

@@ -492,17 +492,6 @@ inline void hash_param<std::vector<uint8_t>>(
 }
 
 template <>
-inline void hash_param<std::vector<std::string>>(
-    size_t &                        seed,
-    const std::vector<std::string> &value)
-{
-	for (auto &resource : value)
-	{
-		hash_combine(seed, resource);
-	}
-}
-
-template <>
 inline void hash_param<std::vector<Attachment>>(
     size_t &                       seed,
     const std::vector<Attachment> &value)

@@ -24,7 +24,7 @@
 
 namespace vkb
 {
-PipelineLayout::PipelineLayout(Device &device, const std::vector<ShaderModule *> &shader_modules, const std::vector<std::string> &dynamic_resources) :
+PipelineLayout::PipelineLayout(Device &device, const std::vector<ShaderModule *> &shader_modules) :
     device{device},
     shader_modules{shader_modules}
 {
@@ -55,12 +55,6 @@ PipelineLayout::PipelineLayout(Device &device, const std::vector<ShaderModule *>
 				shader_resources.emplace(key, shader_resource);
 			}
 		}
-	}
-
-	// Set the requested resources to dynamic
-	for (auto &dynamic_resource : dynamic_resources)
-	{
-		shader_resources[dynamic_resource].dynamic = true;
 	}
 
 	// Sift through the map of name indexed shader resources
